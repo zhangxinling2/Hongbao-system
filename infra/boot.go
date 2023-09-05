@@ -8,10 +8,12 @@ type BootApplication struct {
 }
 
 func New(conf kvs.ConfigSource) *BootApplication {
-	return &BootApplication{
+	b := &BootApplication{
 		starterContext: StarterContext{},
 		conf:           conf,
 	}
+	b.starterContext[KeyProps] = conf
+	return b
 }
 func (b *BootApplication) Start() {
 	b.init()
