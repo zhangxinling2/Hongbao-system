@@ -12,6 +12,4 @@ func main() {
 	conf := ini.NewIniFileConfigSource(file)
 	app := infra.New(conf)
 	app.Start()
-	c := make(chan int)
-	<-c
 }
