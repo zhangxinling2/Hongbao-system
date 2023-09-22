@@ -8,10 +8,14 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/kataras/iris/v12 v12.2.0-alpha
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
+	github.com/segmentio/ksuid v1.0.4
+	github.com/shopspring/decimal v1.3.1
 	github.com/sirupsen/logrus v1.9.3
+	github.com/smartystreets/goconvey v1.8.1
 	github.com/tietang/dbx v1.0.4
 	github.com/tietang/props v2.2.0+incompatible
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
+	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c
 	gopkg.in/go-playground/validator.v9 v9.31.0
 )
 
@@ -27,14 +31,17 @@ require (
 	github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.1 // indirect
+	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/iris-contrib/jade v1.1.4 // indirect
 	github.com/iris-contrib/pongo2 v0.0.1 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/jonboulle/clockwork v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/kataras/blocks v0.0.7 // indirect
 	github.com/kataras/golog v0.1.9 // indirect
 	github.com/kataras/pio v0.0.12 // indirect
@@ -56,7 +63,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
-	github.com/smartystreets/goconvey v1.8.1 // indirect
+	github.com/smarty/assertions v1.15.0 // indirect
 	github.com/tdewolff/minify/v2 v2.12.9 // indirect
 	github.com/tdewolff/parse/v2 v2.6.8 // indirect
 	github.com/tietang/go-utils v0.1.3 // indirect
