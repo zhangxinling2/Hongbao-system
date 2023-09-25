@@ -2,6 +2,7 @@ package accounts
 
 import (
 	"github.com/segmentio/ksuid"
+	"github.com/shopspring/decimal"
 	"github.com/sirupsen/logrus"
 	. "github.com/smartystreets/goconvey/convey"
 	services "resk/services"
@@ -44,7 +45,7 @@ func TestAccountService_Transfer(t *testing.T) {
 		AccountName: "测试用户2",
 		AccountType: 2,
 		CurrentCode: "CNY",
-		Amount:      "100",
+		Amount:      "0",
 	}
 	service := AccountService{}
 	dto1, err := service.CreateAccount(a1)
@@ -65,18 +66,55 @@ func TestAccountService_Transfer(t *testing.T) {
 		UserId:    dto2.UserId,
 		UserName:  dto2.UserName,
 	}
+	amount := decimal.NewFromFloat(60)
 	Convey("测试服务", t, func() {
 		Convey("转账，余额充足", func() {
 			transfer := services.AccountTransferDTO{
 				TradeNo:     ksuid.New().Next().String(),
 				TradeBody:   p1,
 				TradeTarget: p2,
-				AmountStr:   "",
-				Amount:      decimal.Decimal{},
-				ChangeType:  0,
-				ChangeFlag:  0,
-				Decs:        "",
+				AmountStr:   amount.String(),
+				ChangeType:  services.ChangeType(-1),
+				ChangeFlag:  services.FlagTransferOut,
+				Decs:        "转账，余额充足",
 			}
+			status, err := service.Transfer(transfer)
+			So(err, ShouldBeNil)
+			So(status, ShouldEqual, services.TransferSuccess)
+			ra1 := service.GetAccount(dto1.AccountNo)
+			So(ra1.Balance.String(), ShouldEqual, dto1.Balance.Sub(decimal.NewFromFloat(60)).String())
+		})
+		Convey("转账，余额不足", func() {
+			transfer := services.AccountTransferDTO{
+				TradeNo:     ksuid.New().Next().String(),
+				TradeBody:   p1,
+				TradeTarget: p2,
+				AmountStr:   amount.String(),
+				ChangeType:  services.ChangeType(-1),
+				ChangeFlag:  services.FlagTransferOut,
+				Decs:        "转账，余额不足",
+			}
+			status, err := service.Transfer(transfer)
+			So(err, ShouldNotBeNil)
+			So(status, ShouldEqual, services.TransferSufficientFunds)
+			ra1 := service.GetAccount(dto1.AccountNo)
+			So(ra1.Balance.String(), ShouldEqual, decimal.NewFromFloat(40).String())
+		})
+		Convey("给账户1储值", func() {
+			transfer := services.AccountTransferDTO{
+				TradeNo:     ksuid.New().Next().String(),
+				TradeBody:   p1,
+				TradeTarget: p1,
+				AmountStr:   amount.String(),
+				ChangeType:  services.AccountStoreValue,
+				ChangeFlag:  services.FlagTransferIn,
+				Decs:        "储值",
+			}
+			status, err := service.Transfer(transfer)
+			So(err, ShouldBeNil)
+			So(status, ShouldEqual, services.TransferSuccess)
+			ra1 := service.GetAccount(dto1.AccountNo)
+			So(ra1.Balance.String(), ShouldEqual, decimal.NewFromFloat(100).String())
 		})
 	})
 }
