@@ -2,8 +2,16 @@ package service
 
 import (
 	"github.com/shopspring/decimal"
+	"resk/infra/base"
 	"time"
 )
+
+var IAccountService AccountService
+
+func GetAccountService() AccountService {
+	base.Check(IAccountService)
+	return IAccountService
+}
 
 type AccountService interface {
 	CreateAccount(dto AccountCreatedDTO) (*AccountDTO, error)

@@ -13,6 +13,7 @@ import (
 var irisApplication *iris.Application
 
 func Iris() *iris.Application {
+	Check(irisApplication)
 	return irisApplication
 }
 

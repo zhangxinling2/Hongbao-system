@@ -31,16 +31,16 @@ func (b *BootApplication) setup() {
 	}
 }
 func (b *BootApplication) start() {
-	for i, starter := range StarterRegister.AllStarters() {
-
-		if starter.StartBlocking() {
-			if i+1 == len(StarterRegister.AllStarters()) {
-				starter.Start(b.starterContext)
-			} else {
-				go starter.Start(b.starterContext)
-			}
-		} else {
-			starter.Start(b.starterContext)
-		}
+	for _, starter := range StarterRegister.AllStarters() {
+		starter.Start(b.starterContext)
+		//if starter.StartBlocking() {
+		//	if i+1 == len(StarterRegister.AllStarters()) {
+		//		starter.Start(b.starterContext)
+		//	} else {
+		//		go starter.Start(b.starterContext)
+		//	}
+		//} else {
+		//	starter.Start(b.starterContext)
+		//}
 	}
 }
