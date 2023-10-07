@@ -18,4 +18,11 @@ type RedEnvelopeSendingDTO struct {
 	UserName string          `json:"userName" validate:"require"`
 	Amount   decimal.Decimal `json:"amount" validate:"require,numeric"`
 	Quantity int             `json:"quantity" validate:"require,numeric"`
+	Blessing string          `json:"blessing"`
+}
+type RedEnvelopeGoodsDTO struct {
+	EnvelopeNo   string `json:"envelopeNo" validate:"require"`
+	EnvelopeType int    `json:"envelopeType"`
+}
+type RedEnvelopeActivity struct {
 }
