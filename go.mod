@@ -15,7 +15,6 @@ require (
 	github.com/tietang/dbx v1.0.4
 	github.com/tietang/props v2.2.0+incompatible
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
-	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c
 	gopkg.in/go-playground/validator.v9 v9.31.0
 )
 
@@ -31,7 +30,6 @@ require (
 	github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
-	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/gopherjs/gopherjs v1.17.2 // indirect
