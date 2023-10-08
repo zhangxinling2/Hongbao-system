@@ -30,3 +30,11 @@ const (
 	OrderStatusExpire   OrderStatus = 3
 	OrderStatusDisabled OrderStatus = 4
 )
+
+//红包类型：普通红包，碰运气红包
+type EnvelopeType int
+
+const (
+	GeneralEnvelopeType = 1
+	LuckyEnvelopeType   = 2
+)
