@@ -39,3 +39,25 @@ func (r *RedEnvelopeGoods) FromDTO(dto services.RedEnvelopeGoodsDTO) {
 	r.Status = dto.Status
 	r.PayStatus = dto.PayStatus
 }
+func (r *RedEnvelopeGoods) ToDTO() *services.RedEnvelopeGoodsDTO {
+	dto := &services.RedEnvelopeGoodsDTO{
+
+		EnvelopeNo:     r.EnvelopeNo,
+		EnvelopeType:   r.EnvelopeType,
+		UserName:       r.Username.String,
+		UserId:         r.UserId,
+		Blessing:       r.Blessing.String,
+		Amount:         r.Amount,
+		AmountOne:      r.AmountOne,
+		Quantity:       r.Quantity,
+		RemainAmount:   r.RemainAmount,
+		RemainQuantity: r.RemainQuantity,
+		ExpireAt:       r.ExpiredAt,
+		Status:         r.Status,
+		OrderType:      r.OrderType,
+		PayStatus:      r.PayStatus,
+		CreateAt:       r.CreatedAt,
+		UpdateAt:       r.UpdatedAt,
+	}
+	return dto
+}

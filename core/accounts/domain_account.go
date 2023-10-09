@@ -1,6 +1,7 @@
 package accounts
 
 import (
+	"context"
 	"errors"
 	"github.com/segmentio/ksuid"
 	"github.com/shopspring/decimal"
@@ -15,6 +16,9 @@ type accountDomain struct {
 	accountLog AccountLog
 }
 
+func NewAccountDomain() *accountDomain {
+	return new(accountDomain)
+}
 func (domain *accountDomain) createAccountNo() {
 	domain.account.AccountNo = ksuid.New().Next().String()
 }
@@ -76,6 +80,14 @@ func (domain *accountDomain) Create(dto services.AccountDTO) (*services.AccountD
 	return rdto, err
 }
 func (domain *accountDomain) Transfer(dto services.AccountTransferDTO) (status services.TransferStatus, err error) {
+	err = base.Tx(func(runner *dbx.TxRunner) error {
+		ctx := base.WithValueContext(context.Background(), runner)
+		status, err = domain.TransferWithContextTx(ctx, dto)
+		return err
+	})
+	return status, err
+}
+func (domain *accountDomain) TransferWithContextTx(ctx context.Context, dto services.AccountTransferDTO) (status services.TransferStatus, err error) {
 	amount := dto.Amount
 	if dto.ChangeFlag == services.FlagTransferOut {
 		amount = amount.Mul(decimal.NewFromFloat(-1))
@@ -84,7 +96,7 @@ func (domain *accountDomain) Transfer(dto services.AccountTransferDTO) (status s
 	domain.accountLog.FromTransferDTO(dto)
 	domain.createAccountLogNo()
 
-	err = base.Tx(func(runner *dbx.TxRunner) error {
+	err = base.TxContext(ctx, func(runner *dbx.TxRunner) error {
 		accountDao := AccountDao{runner: runner}
 		accountLogDao := AccountLogDAO{runner: runner}
 

@@ -6,6 +6,8 @@ import (
 	"github.com/tietang/dbx"
 )
 
+const TX = "tx"
+
 func TxContext(ctx context.Context, fn func(runner *dbx.TxRunner) error) error {
 	return DbxDataBase().Tx(fn)
 }

@@ -30,6 +30,9 @@ func (g *goodsDomain) Create(goods services.RedEnvelopeGoodsDTO) {
 	g.RedEnvelopeGoods.RemainAmount = g.RedEnvelopeGoods.Amount
 	g.RedEnvelopeGoods.RemainQuantity = g.RedEnvelopeGoods.Quantity
 	g.RedEnvelopeGoods.ExpiredAt = time.Now().Add(24 * time.Hour)
+	g.Status = services.OrderStatusCreated
+	g.OrderType = services.OrderSending
+	g.PayStatus = services.PayPaying
 	g.createNo()
 }
 func (g *goodsDomain) Save(ctx context.Context) (id int64, err error) {

@@ -24,20 +24,7 @@ type AccountService struct {
 
 func (a *AccountService) CreateAccount(dto services.AccountCreatedDTO) (*services.AccountDTO, error) {
 	domain := accountDomain{}
-	err := base.Validate().Struct(&dto)
-	if err != nil {
-		_, ok := err.(*validator.InvalidValidationError)
-		if ok {
-			logrus.Error(err)
-		}
-		errs, ok := err.(validator.ValidationErrors)
-		if ok {
-			for _, e := range errs {
-				logrus.Error(e.Translate(base.Translator()))
-			}
-		}
-		return nil, err
-	}
+	err := base.ValidateStruct(&dto)
 	amount, err := decimal.NewFromString(dto.Amount)
 	if err != nil {
 		return nil, err

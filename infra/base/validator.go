@@ -39,3 +39,20 @@ func (v ValidatorStarter) Init(ctx infra.StarterContext) {
 	}
 
 }
+func ValidateStruct(s interface{}) error {
+	err := Validate().Struct(s)
+	if err != nil {
+		_, ok := err.(*validator.InvalidValidationError)
+		if ok {
+			logrus.Error(err)
+		}
+		errs, ok := err.(validator.ValidationErrors)
+		if ok {
+			for _, e := range errs {
+				logrus.Error(e.Translate(Translator()))
+			}
+		}
+		return err
+	}
+	return nil
+}

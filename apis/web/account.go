@@ -16,16 +16,18 @@ func init() {
 }
 
 type AccountApi struct {
+	service service.AccountService
 }
 
 func (a *AccountApi) Init() {
+	a.service = service.GetAccountService()
 	groupRouter := base.Iris().Party("/v1/account")
-	groupRouter.Post("/create", createHandler)
-	groupRouter.Post("/transfer", transferHandler)
-	groupRouter.Get("/get", getAccountHandler)
-	groupRouter.Get("/envelop/get", getEnvelopeAccountHandler)
+	groupRouter.Post("/create", a.createHandler)
+	groupRouter.Post("/transfer", a.transferHandler)
+	groupRouter.Get("/get", a.getAccountHandler)
+	groupRouter.Get("/envelop/get", a.getEnvelopeAccountHandler)
 }
-func createHandler(context iris.Context) {
+func (a *AccountApi) createHandler(context iris.Context) {
 	account := service.AccountCreatedDTO{}
 	err := context.ReadJSON(&account)
 	r := base.Res{
@@ -39,8 +41,8 @@ func createHandler(context iris.Context) {
 		context.JSON(r)
 		return
 	}
-	ser := service.GetAccountService()
-	dto, err := ser.CreateAccount(account)
+
+	dto, err := a.service.CreateAccount(account)
 	if err != nil {
 		r.Code = base.ResCodeRequestParamsError
 		r.Message = err.Error()
@@ -49,7 +51,7 @@ func createHandler(context iris.Context) {
 	context.JSON(&r)
 }
 
-func transferHandler(context iris.Context) {
+func (a *AccountApi) transferHandler(context iris.Context) {
 	transfer := service.AccountTransferDTO{}
 	err := context.ReadJSON(&transfer)
 	r := base.Res{
@@ -63,8 +65,7 @@ func transferHandler(context iris.Context) {
 		context.JSON(r)
 		return
 	}
-	ser := service.GetAccountService()
-	status, err := ser.Transfer(transfer)
+	status, err := a.service.Transfer(transfer)
 	if err != nil {
 		r.Code = base.ResCodeRequestParamsError
 		r.Message = err.Error()
@@ -76,7 +77,7 @@ func transferHandler(context iris.Context) {
 	}
 	context.JSON(&r)
 }
-func getEnvelopeAccountHandler(ctx iris.Context) {
+func (a *AccountApi) getEnvelopeAccountHandler(ctx iris.Context) {
 	userId := ctx.URLParam("userId")
 	r := base.Res{
 		Code: base.ResCodeOk,
@@ -87,12 +88,11 @@ func getEnvelopeAccountHandler(ctx iris.Context) {
 		ctx.JSON(&r)
 		return
 	}
-	ser := service.GetAccountService()
-	account := ser.GetEnvelopeAccountByUserId(userId)
+	account := a.service.GetEnvelopeAccountByUserId(userId)
 	r.Date = account
 	ctx.JSON(&r)
 }
-func getAccountHandler(ctx iris.Context) {
+func (a *AccountApi) getAccountHandler(ctx iris.Context) {
 	userId := ctx.URLParam("accountNo")
 	r := base.Res{
 		Code: base.ResCodeOk,
@@ -103,8 +103,7 @@ func getAccountHandler(ctx iris.Context) {
 		ctx.JSON(&r)
 		return
 	}
-	ser := service.GetAccountService()
-	account := ser.GetAccount(userId)
+	account := a.service.GetAccount(userId)
 	r.Date = account
 	ctx.JSON(&r)
 }

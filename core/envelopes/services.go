@@ -1,38 +1,66 @@
 package envelopes
 
 import (
+	"errors"
+	"github.com/shopspring/decimal"
+	log "github.com/sirupsen/logrus"
+	"resk/infra/base"
 	services "resk/services"
 	"sync"
 )
 
-var _ services.RedEnvelopeService = new(envelopeService)
+var _ services.RedEnvelopeService = new(redEnvelopeService)
 var once sync.Once
 
 func init() {
 	once.Do(func() {
-		services.IredEnvelopeService = new(envelopeService)
+		services.IredEnvelopeService = new(redEnvelopeService)
 	})
 }
 
-type envelopeService struct {
+type redEnvelopeService struct {
 }
 
-func (e *envelopeService) SendOut(dto services.RedEnvelopeSendingDTO) (activity *services.RedEnvelopeActivity, err error) {
+func (e *redEnvelopeService) SendOut(dto services.RedEnvelopeSendingDTO) (activity *services.RedEnvelopeActivity, err error) {
+	err = base.ValidateStruct(&dto)
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+	ac := services.GetAccountService()
+	account := ac.GetEnvelopeAccountByUserId(dto.UserId)
+	if account == nil {
+		return nil, errors.New("账户不存在")
+	}
+	goods := dto.ToGoods()
+	goods.AccountNo = account.AccountNo
+	if goods.Blessing == "" {
+		goods.Blessing = services.DefaultBlessing
+	}
+	if goods.EnvelopeType == services.GeneralEnvelopeType {
+		goods.AmountOne = goods.Amount
+		goods.Amount = decimal.Decimal{}
+	}
 	domain := new(goodsDomain)
+	activity, err = domain.SendOut(*goods)
+	if err != nil {
+		log.Error(err)
+	}
 
+	return activity, err
 }
 
-func (e *envelopeService) Receive(dto services.RedEnvelopeReceiveDTO) (item *services.RedEnvelopeItemDTO, err error) {
+func (e *redEnvelopeService) Receive(dto services.RedEnvelopeReceiveDTO) (item *services.RedEnvelopeItemDTO, err error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (e *envelopeService) Refund(envelopeNo string) (order *services.RedEnvelopeGoodsDTO) {
+func (e *redEnvelopeService) Refund(envelopeNo string) (order *services.RedEnvelopeGoodsDTO) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (e *envelopeService) Get(envelopeNo string) (order *services.RedEnvelopeGoodsDTO) {
+func (e *redEnvelopeService) Get(envelopeNo string) (order *services.RedEnvelopeGoodsDTO) {
 	//TODO implement me
 	panic("implement me")
 }

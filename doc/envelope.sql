@@ -1,7 +1,7 @@
 drop table if EXISTS `red_envelope_goods`;
 create table `red_envelope_goods`(
     `id` bigint(20) Not NULL AUTO_INCREMENT COMMENT '自增id',
-    `envelope_no` varchar(20) NOT NULL COMMENT '红包唯一标识',
+    `envelope_no` varchar(32) NOT NULL COMMENT '红包唯一标识',
     `envelope_type` tinyint(2) NOT NULL COMMENT '红包类型：普通红包，碰运气红包,过期红包',
     `username` varchar(64) DEFAULT NULL COMMENT '用户名称',
     `user_id` varchar(40) NOT NULL COMMENT '用户编号, 红包所属用户 ',

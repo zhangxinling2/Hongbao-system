@@ -25,12 +25,26 @@ type RedEnvelopeService interface {
 }
 
 type RedEnvelopeSendingDTO struct {
-	UserId   string          `json:"userId" validate:"require"`
-	UserName string          `json:"userName" validate:"require"`
-	Amount   decimal.Decimal `json:"amount" validate:"require,numeric"`
-	Quantity int             `json:"quantity" validate:"require,numeric"`
-	Blessing string          `json:"blessing"`
+	UserId       string          `json:"userId" validate:"required"`
+	UserName     string          `json:"userName" validate:"required"`
+	Amount       decimal.Decimal `json:"amount" validate:"required,numeric"`
+	Quantity     int             `json:"quantity" validate:"required,numeric"`
+	Blessing     string          `json:"blessing"`
+	EnvelopeType EnvelopeType    `json:"envelopeType"`
 }
+
+func (r *RedEnvelopeSendingDTO) ToGoods() *RedEnvelopeGoodsDTO {
+	goods := &RedEnvelopeGoodsDTO{
+		EnvelopeType: r.EnvelopeType,
+		UserName:     r.UserName,
+		UserId:       r.UserId,
+		Blessing:     r.Blessing,
+		Amount:       r.Amount,
+		Quantity:     r.Quantity,
+	}
+	return goods
+}
+
 type RedEnvelopeReceiveDTO struct {
 	EnvelopeNo   string `json:"envelopeNo" validate:"required"`   //红包编号,红包唯一标识
 	RecvUsername string `json:"recvUsername" validate:"required"` //红包接收者用户名称
@@ -53,10 +67,10 @@ type RedEnvelopeItemDTO struct {
 	Desc         string          `json:"desc"`
 }
 type RedEnvelopeGoodsDTO struct {
-	EnvelopeNo       string          `json:"envelopeNo" validate:"require"`
-	EnvelopeType     EnvelopeType    `json:"envelopeType" validate:"require"`
-	UserName         string          `json:"userName" validate:"require"`
-	UserId           string          `json:"userId" validate:"require"`
+	EnvelopeNo       string          `json:"envelopeNo" validate:"required"`
+	EnvelopeType     EnvelopeType    `json:"envelopeType" validate:"required"`
+	UserName         string          `json:"userName" validate:"required"`
+	UserId           string          `json:"userId" validate:"required"`
 	Blessing         string          `json:"blessing"`
 	Amount           decimal.Decimal `json:"amount" validate:"required,numeric"`
 	AmountOne        decimal.Decimal `json:"amountOne"`
