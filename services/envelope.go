@@ -90,3 +90,7 @@ type RedEnvelopeActivity struct {
 	RedEnvelopeGoodsDTO
 	Link string `json:"link"`
 }
+
+func (r *RedEnvelopeActivity) CopyTo(res *RedEnvelopeActivity) {
+	res = r
+}
