@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-var redEnvelopeService RedEnvelopeService
+var IredEnvelopeService RedEnvelopeService
 
 func GetRedEnvelopeService() RedEnvelopeService {
-	base.Check(redEnvelopeService)
-	return redEnvelopeService
+	base.Check(IredEnvelopeService)
+	return IredEnvelopeService
 }
 
 type RedEnvelopeService interface {
