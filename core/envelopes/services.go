@@ -1,6 +1,7 @@
 package envelopes
 
 import (
+	"context"
 	"errors"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
@@ -51,8 +52,14 @@ func (e *redEnvelopeService) SendOut(dto services.RedEnvelopeSendingDTO) (activi
 }
 
 func (e *redEnvelopeService) Receive(dto services.RedEnvelopeReceiveDTO) (item *services.RedEnvelopeItemDTO, err error) {
-	//TODO implement me
-	panic("implement me")
+	err = base.ValidateStruct(&dto)
+	as := services.GetAccountService()
+	account := as.GetEnvelopeAccountByUserId(dto.RecvUserId)
+	if account != nil {
+		return nil, errors.New("红包账户不存在:user_id=" + dto.RecvUserId)
+	}
+	domain := new(goodsDomain)
+	return domain.Receive(context.Background(), dto)
 }
 
 func (e *redEnvelopeService) Refund(envelopeNo string) (order *services.RedEnvelopeGoodsDTO) {
