@@ -12,6 +12,7 @@ import (
 
 type goodsDomain struct {
 	RedEnvelopeGoods
+	item itemDomain
 }
 
 func (g *goodsDomain) createNo() {
@@ -46,4 +47,15 @@ func (g *goodsDomain) Save(ctx context.Context) (id int64, err error) {
 func (g *goodsDomain) CreateAndSave(ctx context.Context, goods services.RedEnvelopeGoodsDTO) (id int64, err error) {
 	g.Create(goods)
 	return g.Save(ctx)
+}
+func (g *goodsDomain) Get(envelopeNo string) (goods *RedEnvelopeGoods) {
+	err := base.Tx(func(runner *dbx.TxRunner) error {
+		dao := EnvelopeDao{runner: runner}
+		goods = dao.GetOne(envelopeNo)
+		return nil
+	})
+	if err != nil {
+		return nil
+	}
+	return goods
 }

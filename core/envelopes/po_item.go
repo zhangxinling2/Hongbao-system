@@ -3,6 +3,7 @@ package envelopes
 import (
 	"database/sql"
 	"github.com/shopspring/decimal"
+	services "resk/services"
 	"time"
 )
 
@@ -20,4 +21,37 @@ type RedEnvelopeItem struct {
 	CreatedAt    time.Time       `db:"created_at,omitempty"` //创建时间
 	UpdatedAt    time.Time       `db:"updated_at,omitempty"` //更新时间
 	Desc         string          `db:"desc"`
+}
+
+func (po *RedEnvelopeItem) FromDTO(dto *services.RedEnvelopeItemDTO) {
+	po.ItemNo = dto.ItemNo
+	po.EnvelopeNo = dto.EnvelopeNo
+	po.RecvUsername = sql.NullString{Valid: true, String: dto.RecvUsername}
+	po.RecvUserId = dto.RecvUserId
+	po.Amount = dto.Amount
+	po.Quantity = dto.Quantity
+	po.RemainAmount = dto.RemainAmount
+	po.AccountNo = dto.AccountNo
+	po.PayStatus = dto.PayStatus
+	po.CreatedAt = dto.CreatedAt
+	po.UpdatedAt = dto.UpdatedAt
+	po.Desc = dto.Desc
+}
+func (po *RedEnvelopeItem) ToDTO() *services.RedEnvelopeItemDTO {
+	dto := &services.RedEnvelopeItemDTO{
+
+		ItemNo:       po.ItemNo,
+		EnvelopeNo:   po.EnvelopeNo,
+		RecvUsername: po.RecvUsername.String,
+		RecvUserId:   po.RecvUserId,
+		Amount:       po.Amount,
+		Quantity:     po.Quantity,
+		RemainAmount: po.RemainAmount,
+		AccountNo:    po.AccountNo,
+		PayStatus:    po.PayStatus,
+		CreatedAt:    po.CreatedAt,
+		UpdatedAt:    po.UpdatedAt,
+		Desc:         po.Desc,
+	}
+	return dto
 }
