@@ -30,33 +30,33 @@ func TestRedEnvelopeService_Receive(t *testing.T) {
 		}
 		acDto := accounts[0]
 		rs := service.GetRedEnvelopeService()
-		//Convey("收普通红包", func() {
-		//	goods := service.RedEnvelopeSendingDTO{
-		//		UserId:       acDto.UserId,
-		//		UserName:     acDto.UserName,
-		//		EnvelopeType: service.GeneralEnvelopeType,
-		//		Amount:       decimal.NewFromFloat(1.88),
-		//		Quantity:     size,
-		//		Blessing:     service.DefaultBlessing,
-		//	}
-		//	activity, err := rs.SendOut(goods)
-		//	So(err, ShouldBeNil)
-		//	So(activity, ShouldNotBeNil)
-		//	remainAmount := activity.RemainAmount
-		//	for _, account := range accounts {
-		//		rcv := service.RedEnvelopeReceiveDTO{
-		//			EnvelopeNo:   activity.EnvelopeNo,
-		//			RecvUserId:   account.UserId,
-		//			RecvUsername: account.UserName,
-		//			AccountNo:    account.AccountNo,
-		//		}
-		//		item, err := rs.Receive(rcv)
-		//		So(err, ShouldBeNil)
-		//		So(item.Amount.String(), ShouldEqual, activity.AmountOne.String())
-		//		remainAmount = remainAmount.Sub(item.Amount)
-		//		So(item.RemainAmount.String(), ShouldEqual, remainAmount.String())
-		//	}
-		//})
+		Convey("收普通红包", func() {
+			goods := service.RedEnvelopeSendingDTO{
+				UserId:       acDto.UserId,
+				UserName:     acDto.UserName,
+				EnvelopeType: service.GeneralEnvelopeType,
+				Amount:       decimal.NewFromFloat(1.88),
+				Quantity:     size,
+				Blessing:     service.DefaultBlessing,
+			}
+			activity, err := rs.SendOut(goods)
+			So(err, ShouldBeNil)
+			So(activity, ShouldNotBeNil)
+			remainAmount := activity.RemainAmount
+			for _, account := range accounts {
+				rcv := service.RedEnvelopeReceiveDTO{
+					EnvelopeNo:   activity.EnvelopeNo,
+					RecvUserId:   account.UserId,
+					RecvUsername: account.UserName,
+					AccountNo:    account.AccountNo,
+				}
+				item, err := rs.Receive(rcv)
+				So(err, ShouldBeNil)
+				So(item.Amount.String(), ShouldEqual, activity.AmountOne.String())
+				remainAmount = remainAmount.Sub(item.Amount)
+				So(item.RemainAmount.String(), ShouldEqual, remainAmount.String())
+			}
+		})
 		Convey("收拼运气红包", func() {
 			goods := service.RedEnvelopeSendingDTO{
 				UserId:       acDto.UserId,

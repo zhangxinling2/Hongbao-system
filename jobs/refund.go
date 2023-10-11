@@ -20,7 +20,7 @@ func (r *RefundExpiredJobStarter) Init(ctx infra.StarterContext) {
 func (r *RefundExpiredJobStarter) Start(ctx infra.StarterContext) {
 	go func() {
 		for {
-			c := <-r.ticker.C
+			<-r.ticker.C
 		}
 	}()
 }

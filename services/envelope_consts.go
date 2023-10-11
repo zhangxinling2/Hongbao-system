@@ -20,6 +20,11 @@ const (
 	PayPaying  PayStatus = 2
 	PayPayed   PayStatus = 3
 	PayFailure PayStatus = 4
+
+	RefundNothing PayStatus = 61
+	Refunding     PayStatus = 62
+	Refunded      PayStatus = 63
+	RefundFailure PayStatus = 64
 )
 
 type OrderStatus int
@@ -33,7 +38,7 @@ const (
 	OrderExpiredRefundFailure    OrderStatus = 6
 )
 
-//红包类型：普通红包，碰运气红包
+// 红包类型：普通红包，碰运气红包
 type EnvelopeType int
 
 const (
