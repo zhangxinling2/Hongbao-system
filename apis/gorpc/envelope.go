@@ -13,3 +13,11 @@ func (e *EnvelopeRPC) SendOut(in services.RedEnvelopeSendingDTO, out *services.R
 	}
 	return nil
 }
+func (e *EnvelopeRPC) Receive(in services.RedEnvelopeReceiveDTO, out *services.RedEnvelopeItemDTO) error {
+	se := services.GetRedEnvelopeService()
+	out, err := se.Receive(in)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -55,7 +55,7 @@ func (e *redEnvelopeService) Receive(dto services.RedEnvelopeReceiveDTO) (item *
 	err = base.ValidateStruct(&dto)
 	as := services.GetAccountService()
 	account := as.GetEnvelopeAccountByUserId(dto.RecvUserId)
-	if account != nil {
+	if account == nil {
 		return nil, errors.New("红包账户不存在:user_id=" + dto.RecvUserId)
 	}
 	domain := new(goodsDomain)

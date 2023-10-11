@@ -25,10 +25,12 @@ const (
 type OrderStatus int
 
 const (
-	OrderStatusCreated  OrderStatus = 1
-	OrderStatusSending  OrderStatus = 2
-	OrderStatusExpire   OrderStatus = 3
-	OrderStatusDisabled OrderStatus = 4
+	OrderStatusCreated           OrderStatus = 1
+	OrderStatusSending           OrderStatus = 2
+	OrderStatusExpire            OrderStatus = 3
+	OrderStatusDisabled          OrderStatus = 4
+	OrderExpiredRefundSuccessful OrderStatus = 5
+	OrderExpiredRefundFailure    OrderStatus = 6
 )
 
 //红包类型：普通红包，碰运气红包

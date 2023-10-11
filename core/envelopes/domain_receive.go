@@ -17,12 +17,13 @@ var mul = decimal.NewFromFloat(100.0)
 
 func (d *goodsDomain) Receive(ctx context.Context, dto services.RedEnvelopeReceiveDTO) (item *services.RedEnvelopeItemDTO, err error) {
 	d.preCreateItem(dto)
-	good := d.Get(d.EnvelopeNo)
+	good := d.Get(dto.EnvelopeNo)
 	if good.RemainQuantity <= 0 || good.RemainAmount.Cmp(decimal.NewFromFloat(0)) <= 0 {
 		log.Errorf("没有足够的红包和金额了: %+v", good)
 		return nil, errors.New("没有足够的红包和金额了")
 	}
 	amount, err := d.nextAmount(good)
+	log.Info("amount" + amount.String())
 	if err != nil {
 		log.Error(err)
 		return nil, err

@@ -7,6 +7,7 @@ import (
 	_ "resk/core/envelopes"
 	"resk/infra"
 	"resk/infra/base"
+	"resk/jobs"
 )
 
 func init() {
@@ -15,6 +16,7 @@ func init() {
 	infra.Register(&base.ValidatorStarter{})
 	infra.Register(&base.GoRPCStarter{})
 	infra.Register(&gorpc.GoRpcApiStarter{})
+	infra.Register(&jobs.RefundExpiredJobStarter{})
 	infra.Register(&base.IrisApplicationStarter{})
 	infra.Register(&infra.WebStarter{})
 }

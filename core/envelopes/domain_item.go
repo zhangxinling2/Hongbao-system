@@ -12,12 +12,12 @@ type itemDomain struct {
 	RedEnvelopeItem
 }
 
-func (i *itemDomain) createItemNo() string {
-	return ksuid.New().Next().String()
+func (i *itemDomain) createItemNo() {
+	i.ItemNo = ksuid.New().Next().String()
 }
 func (i *itemDomain) Create(item services.RedEnvelopeItemDTO) {
 	i.RedEnvelopeItem.FromDTO(&item)
-	i.ItemNo = i.createItemNo()
+	i.createItemNo()
 }
 func (i *itemDomain) Save(ctx context.Context) (id int64, err error) {
 	err = base.ExecuteContext(ctx, func(runner *dbx.TxRunner) error {

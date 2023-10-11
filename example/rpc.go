@@ -13,6 +13,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	err = sendout(c)
+}
+func sendout(c *rpc.Client) error {
 	in := services.RedEnvelopeSendingDTO{
 		UserId:       "1001",
 		UserName:     "测试用户",
@@ -22,7 +25,23 @@ func main() {
 		EnvelopeType: 1,
 	}
 	var out *services.RedEnvelopeActivity
-	err = c.Call("EnvelopeRpc.SendOut", in, out)
+	err := c.Call("EnvelopeRpc.SendOut", in, out)
 	log.Info(err)
 	log.Info(out)
+	return err
+}
+func receive(c *rpc.Client) error {
+	in := services.RedEnvelopeReceiveDTO{
+		EnvelopeNo:   "",
+		RecvUserId:   "",
+		RecvUsername: "",
+		AccountNo:    "",
+	}
+	out := &services.RedEnvelopeItemDTO{}
+	err := c.Call("Envelope.Receive", in, out)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Info(out)
+	return err
 }

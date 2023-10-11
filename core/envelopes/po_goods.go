@@ -38,6 +38,7 @@ func (r *RedEnvelopeGoods) FromDTO(dto services.RedEnvelopeGoodsDTO) {
 	r.OrderType = dto.OrderType
 	r.Status = dto.Status
 	r.PayStatus = dto.PayStatus
+	r.AmountOne = dto.AmountOne
 }
 func (r *RedEnvelopeGoods) ToDTO() *services.RedEnvelopeGoodsDTO {
 	dto := &services.RedEnvelopeGoodsDTO{
