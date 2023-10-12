@@ -31,7 +31,7 @@ func (dao *EnvelopeDao) GetOne(envelopeNo string) *RedEnvelopeGoods {
 func (dao *EnvelopeDao) FindExpired(offset, size int) []RedEnvelopeGoods {
 	var goods []RedEnvelopeGoods
 	now := time.Now()
-	sql := "select * from red_envelope_goods where order_type=1 and remain_quantity >0 and expired_at > ? and status in(1,2,3,6) limit ?,?"
+	sql := "select * from red_envelope_goods where order_type=1 and remain_quantity >0 and expired_at < ? and status in(1,2,3,6) limit ?,?"
 	err := dao.runner.Find(&goods, sql, now, offset, size)
 	if err != nil {
 		log.Error(err)
