@@ -80,3 +80,6 @@ func (r *starterRegister) AllStarters() []Starter {
 func Register(starter Starter) {
 	StarterRegister.Register(starter)
 }
+func GetStarters() []Starter {
+	return StarterRegister.starters
+}
