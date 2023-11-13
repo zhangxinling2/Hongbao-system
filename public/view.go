@@ -1,10 +1,10 @@
 package public
 
 import (
-	"git.imooc.com/wendell1000/infra"
-	"git.imooc.com/wendell1000/infra/base"
-	"github.com/kataras/iris"
+	"github.com/kataras/iris/v12"
 	"github.com/prometheus/common/log"
+	"github.com/zhangxinling2/infra"
+	"github.com/zhangxinling2/infra/base"
 	"path/filepath"
 	"runtime"
 	"strings"

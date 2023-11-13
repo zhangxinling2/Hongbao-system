@@ -5,7 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
 	"github.com/tietang/props/kvs"
-	"resk/infra"
+	"github.com/zhangxinling2/infra"
 )
 
 var database = &dbx.Database{}

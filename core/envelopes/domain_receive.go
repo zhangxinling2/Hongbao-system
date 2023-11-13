@@ -8,8 +8,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
 	"resk/core/accounts"
-	"resk/infra/algo"
-	"resk/infra/base"
+	"github.com/zhangxinling2/infra/algo"
+	"github.com/zhangxinling2/infra/base"
 	services "resk/services"
 )
 

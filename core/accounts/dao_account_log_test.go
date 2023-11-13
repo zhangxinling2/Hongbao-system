@@ -6,7 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/tietang/dbx"
-	"resk/infra/base"
+	"github.com/zhangxinling2/infra/base"
 	services "resk/services"
 	_ "resk/testx"
 	"testing"

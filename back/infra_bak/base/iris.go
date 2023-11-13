@@ -1,12 +1,11 @@
 package base
 
 import (
-	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	irisrecover "github.com/kataras/iris/v12/middleware/recover"
 	"github.com/sirupsen/logrus"
 	"os"
-	"resk/infra"
+	"github.com/zhangxinling2/infra"
 	"time"
 )
 

@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"reflect"
-	"resk/infra"
+	"github.com/zhangxinling2/infra"
 	"syscall"
 )
 

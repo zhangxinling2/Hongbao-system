@@ -5,7 +5,7 @@ import (
 	"net"
 	"net/rpc"
 	"reflect"
-	"resk/infra"
+	"github.com/zhangxinling2/infra"
 )
 
 var rpcServer *rpc.Server

@@ -1,11 +1,11 @@
 package views
 
 import (
-	"git.imooc.com/wendell1000/infra"
-	"git.imooc.com/wendell1000/infra/base"
-	"git.imooc.com/wendell1000/resk/core/users"
-	"github.com/kataras/iris"
+	"github.com/kataras/iris/v12"
+	"github.com/zhangxinling2/infra"
+	"github.com/zhangxinling2/infra/base"
 	"path/filepath"
+	"resk/core/users"
 	"runtime"
 )
 
@@ -28,8 +28,8 @@ func (v *View) Init() {
 	//app.RegisterView(views)
 	app.Favicon(filepath.Join(dir, "/favicon.ico"))
 	//contextPath := ""
-	app.StaticWeb("/public/static", filepath.Join(dir, "../static"))
-	app.StaticWeb("/public/views", dir)
+	app.HandleDir("/public/static", filepath.Join(dir, "../static"))
+	app.HandleDir("/public/views", dir)
 	v.groupRouter = app.Party("/v1/envelope")
 	v.groupRouter.Layout("views/layouts/layout.html")
 	v.index()

@@ -5,7 +5,7 @@ import (
 	"github.com/segmentio/ksuid"
 	"github.com/shopspring/decimal"
 	"github.com/tietang/dbx"
-	"resk/infra/base"
+	"github.com/zhangxinling2/infra/base"
 	services "resk/services"
 	"time"
 )
