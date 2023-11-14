@@ -1,13 +1,13 @@
 package Hongbao_system
 
 import (
+	_ "github.com/zhangxinling2/account/core/accounts"
 	"github.com/zhangxinling2/infra"
 	"github.com/zhangxinling2/infra/base"
-	"resk/apis/gorpc"
-	_ "resk/apis/web"
-	_ "resk/core/accounts"
-	_ "resk/core/envelopes"
-	"resk/jobs"
+	"github.com/zhangxinling2/resk/apis/gorpc"
+	_ "github.com/zhangxinling2/resk/apis/web"
+	_ "github.com/zhangxinling2/resk/core/envelopes"
+	"github.com/zhangxinling2/resk/jobs"
 )
 
 func init() {

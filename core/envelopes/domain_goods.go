@@ -6,7 +6,7 @@ import (
 	"github.com/shopspring/decimal"
 	"github.com/tietang/dbx"
 	"github.com/zhangxinling2/infra/base"
-	services "resk/services"
+	services "github.com/zhangxinling2/resk/services"
 	"time"
 )
 

@@ -4,7 +4,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/zhangxinling2/infra"
 	"github.com/zhangxinling2/infra/base"
-	service "resk/services"
+	service "github.com/zhangxinling2/resk/services"
 )
 
 func init() {

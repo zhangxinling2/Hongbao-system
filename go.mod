@@ -1,14 +1,11 @@
-module resk
+module github.com/zhangxinling2/resk
 
 go 1.18
 
 require (
-	git.imooc.com/wendell1000/account v0.1.2
-	git.imooc.com/wendell1000/infra v0.1.3
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-sql-driver/mysql v1.7.1
-	github.com/kataras/iris v11.1.1+incompatible
 	github.com/kataras/iris/v12 v12.2.0-alpha
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/prometheus/common v0.2.0
@@ -19,25 +16,16 @@ require (
 	github.com/tietang/dbx v1.0.4
 	github.com/tietang/props v2.3.0+incompatible
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
+	github.com/zhangxinling2/account v0.1.3
+	github.com/zhangxinling2/infra v0.1.0
 	gopkg.in/go-playground/validator.v9 v9.31.0
 )
 
 require (
-	github.com/Joker/jade v1.0.0 // indirect
 	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc // indirect
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf // indirect
-	github.com/flosch/pongo2 v0.0.0-20181225140029-79872a7b2769 // indirect
-	github.com/iris-contrib/blackfriday v2.0.0+incompatible // indirect
-	github.com/iris-contrib/formBinder v0.0.0-20190104093907-fbd5963f41e1 // indirect
-	github.com/iris-contrib/go.uuid v2.0.0+incompatible // indirect
-	github.com/juju/errors v0.0.0-20181118221551-089d3ea4e4d5 // indirect
-	github.com/lestrrat/go-file-rotatelogs v0.0.0-20180223000712-d3151e2a480f // indirect
-	github.com/lestrrat/go-strftime v0.0.0-20180220042222-ba3bf9c1d042 // indirect
-	github.com/nxadm/tail v1.4.8 // indirect
-	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 // indirect
-	github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f // indirect
-	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
+	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 )
 
 require (
@@ -91,7 +79,6 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/yosssi/ace v0.0.5 // indirect
-	github.com/zhangxinling2/infra v0.1.0
 	golang.org/x/crypto v0.13.0 // indirect
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect

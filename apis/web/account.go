@@ -2,9 +2,9 @@ package web
 
 import (
 	"github.com/kataras/iris/v12"
+	acservice "github.com/zhangxinling2/account/services"
 	"github.com/zhangxinling2/infra"
 	"github.com/zhangxinling2/infra/base"
-	service "resk/services"
 )
 
 const (
@@ -16,11 +16,11 @@ func init() {
 }
 
 type AccountApi struct {
-	service service.AccountService
+	service acservice.AccountService
 }
 
 func (a *AccountApi) Init() {
-	a.service = service.GetAccountService()
+	a.service = acservice.GetAccountService()
 	groupRouter := base.Iris().Party("/v1/account")
 	groupRouter.Post("/create", a.createHandler)
 	groupRouter.Post("/transfer", a.transferHandler)
@@ -28,7 +28,7 @@ func (a *AccountApi) Init() {
 	groupRouter.Get("/envelop/get", a.getEnvelopeAccountHandler)
 }
 func (a *AccountApi) createHandler(context iris.Context) {
-	account := service.AccountCreatedDTO{}
+	account := acservice.AccountCreatedDTO{}
 	err := context.ReadJSON(&account)
 	r := base.Res{
 		Code:    base.ResCodeOk,
@@ -52,7 +52,7 @@ func (a *AccountApi) createHandler(context iris.Context) {
 }
 
 func (a *AccountApi) transferHandler(context iris.Context) {
-	transfer := service.AccountTransferDTO{}
+	transfer := acservice.AccountTransferDTO{}
 	err := context.ReadJSON(&transfer)
 	r := base.Res{
 		Code:    base.ResCodeOk,
@@ -71,7 +71,7 @@ func (a *AccountApi) transferHandler(context iris.Context) {
 		r.Message = err.Error()
 	}
 	r.Date = status
-	if status != service.TransferSuccess {
+	if status != acservice.TransferSuccess {
 		r.Code = ResCodeBizTransferedFailure
 		r.Message = err.Error()
 	}

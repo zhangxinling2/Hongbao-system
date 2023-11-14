@@ -5,8 +5,9 @@ import (
 	"errors"
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
+	acservices "github.com/zhangxinling2/account/services"
 	"github.com/zhangxinling2/infra/base"
-	services "resk/services"
+	services "github.com/zhangxinling2/resk/services"
 	"sync"
 )
 
@@ -28,7 +29,7 @@ func (e *redEnvelopeService) SendOut(dto services.RedEnvelopeSendingDTO) (activi
 		log.Error(err)
 		return nil, err
 	}
-	ac := services.GetAccountService()
+	ac := acservices.GetAccountService()
 	account := ac.GetEnvelopeAccountByUserId(dto.UserId)
 	if account == nil {
 		return nil, errors.New("账户不存在")
@@ -53,7 +54,7 @@ func (e *redEnvelopeService) SendOut(dto services.RedEnvelopeSendingDTO) (activi
 
 func (e *redEnvelopeService) Receive(dto services.RedEnvelopeReceiveDTO) (item *services.RedEnvelopeItemDTO, err error) {
 	err = base.ValidateStruct(&dto)
-	as := services.GetAccountService()
+	as := acservices.GetAccountService()
 	account := as.GetEnvelopeAccountByUserId(dto.RecvUserId)
 	if account == nil {
 		return nil, errors.New("红包账户不存在:user_id=" + dto.RecvUserId)
@@ -68,6 +69,51 @@ func (e *redEnvelopeService) Refund(envelopeNo string) (order *services.RedEnvel
 }
 
 func (e *redEnvelopeService) Get(envelopeNo string) (order *services.RedEnvelopeGoodsDTO) {
-	//TODO implement me
-	panic("implement me")
+	domain := goodsDomain{}
+	po := domain.Get(envelopeNo)
+	if po == nil {
+		return order
+	}
+	return po.ToDTO()
+}
+func (r *redEnvelopeService) ListSent(userId string, page, size int) (orders []*services.RedEnvelopeGoodsDTO) {
+	domain := new(goodsDomain)
+	pos := domain.FindByUser(userId, page, size)
+	orders = make([]*services.RedEnvelopeGoodsDTO, 0, len(pos))
+	for _, p := range pos {
+		orders = append(orders, p.ToDTO())
+	}
+
+	return
+}
+
+func (r *redEnvelopeService) ListReceivable(page, size int) (orders []*services.RedEnvelopeGoodsDTO) {
+	domain := new(goodsDomain)
+
+	pos := domain.ListReceivable(page, size)
+	orders = make([]*services.RedEnvelopeGoodsDTO, 0, len(pos))
+	for _, p := range pos {
+		if p.RemainQuantity > 0 {
+			orders = append(orders, p.ToDTO())
+		}
+	}
+	return
+}
+
+func (r *redEnvelopeService) ListReceived(userId string, page, size int) (items []*services.RedEnvelopeItemDTO) {
+	domain := new(goodsDomain)
+	pos := domain.ListReceived(userId, page, size)
+	items = make([]*services.RedEnvelopeItemDTO, 0, len(pos))
+	if len(pos) == 0 {
+		return items
+	}
+	for _, p := range pos {
+		items = append(items, p.ToDTO())
+	}
+	return
+}
+
+func (r *redEnvelopeService) ListItems(envelopeNo string) (items []*services.RedEnvelopeItemDTO) {
+	domain := itemDomain{}
+	return domain.FindItems(envelopeNo)
 }

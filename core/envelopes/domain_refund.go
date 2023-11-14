@@ -5,9 +5,10 @@ import (
 	"errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
-	"resk/core/accounts"
+	"github.com/zhangxinling2/account/core/accounts"
+	acservices "github.com/zhangxinling2/account/services"
 	"github.com/zhangxinling2/infra/base"
-	services "resk/services"
+	services "github.com/zhangxinling2/resk/services"
 )
 
 type ExpiredEnvelopeDomain struct {
@@ -71,28 +72,28 @@ func (e *ExpiredEnvelopeDomain) ExpireOne(goods RedEnvelopeGoods) (err error) {
 	acDomain := accounts.NewAccountDomain()
 	sc := base.GetSystemAccount()
 	ac := acDomain.GetEnvelopeAccountByUserId(goods.UserId)
-	body := services.TradeParticipator{
+	body := acservices.TradeParticipator{
 		AccountNo: sc.AccountNo,
 		UserId:    sc.UserId,
 		UserName:  sc.UserName,
 	}
-	target := services.TradeParticipator{
+	target := acservices.TradeParticipator{
 		AccountNo: ac.AccountNo,
 		UserId:    ac.UserId,
 		UserName:  ac.UserName,
 	}
-	transfer := services.AccountTransferDTO{
+	transfer := acservices.AccountTransferDTO{
 		TradeNo:     domain.RedEnvelopeGoods.EnvelopeNo,
 		TradeBody:   body,
 		TradeTarget: target,
 		AmountStr:   "",
 		Amount:      goods.RemainAmount,
-		ChangeType:  services.EnvelopeExpire,
-		ChangeFlag:  services.FlagTransferOut,
+		ChangeType:  acservices.EnvelopeExpire,
+		ChangeFlag:  acservices.FlagTransferOut,
 		Decs:        "红包过期退款",
 	}
-	status, err := services.GetAccountService().Transfer(transfer)
-	if status != services.TransferSuccess || err != nil {
+	status, err := acservices.GetAccountService().Transfer(transfer)
+	if status != acservices.TransferSuccess || err != nil {
 		return err
 	}
 	//更新原订单状态

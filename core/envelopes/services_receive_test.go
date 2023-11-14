@@ -4,23 +4,24 @@ import (
 	"github.com/segmentio/ksuid"
 	"github.com/shopspring/decimal"
 	. "github.com/smartystreets/goconvey/convey"
-	service "resk/services"
+	acservices "github.com/zhangxinling2/account/services"
+	service "github.com/zhangxinling2/resk/services"
 	"strconv"
 	"testing"
 )
 
 func TestRedEnvelopeService_Receive(t *testing.T) {
-	as := service.GetAccountService()
+	as := acservices.GetAccountService()
 	Convey("收红包测试用例", t, func() {
-		accounts := make([]*service.AccountDTO, 0, 10)
+		accounts := make([]*acservices.AccountDTO, 0, 10)
 		size := 10
 		for i := 0; i < size; i++ {
-			account := service.AccountCreatedDTO{
+			account := acservices.AccountCreatedDTO{
 				UserId:      ksuid.New().Next().String(),
 				UserName:    "测试用户" + strconv.Itoa(i+1),
 				Amount:      "2000",
 				AccountName: "测试账户" + strconv.Itoa(i+1),
-				AccountType: int(service.EnvelopeAccountType),
+				AccountType: int(acservices.EnvelopeAccountType),
 				CurrentCode: "CNY",
 			}
 			acDto, err := as.CreateAccount(account)
@@ -86,17 +87,17 @@ func TestRedEnvelopeService_Receive(t *testing.T) {
 	})
 }
 func TestRedEnvelopeService_Receive_Failure(t *testing.T) {
-	as := service.GetAccountService()
+	as := acservices.GetAccountService()
 	Convey("收红包测试用例", t, func() {
-		accounts := make([]*service.AccountDTO, 0, 10)
+		accounts := make([]*acservices.AccountDTO, 0, 10)
 		size := 5
 		for i := 0; i < size; i++ {
-			account := service.AccountCreatedDTO{
+			account := acservices.AccountCreatedDTO{
 				UserId:      ksuid.New().Next().String(),
 				UserName:    "测试用户RF" + strconv.Itoa(i+1),
 				Amount:      "30",
 				AccountName: "测试账户RF" + strconv.Itoa(i+1),
-				AccountType: int(service.EnvelopeAccountType),
+				AccountType: int(acservices.EnvelopeAccountType),
 				CurrentCode: "CNY",
 			}
 			acDto, err := as.CreateAccount(account)

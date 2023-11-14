@@ -7,10 +7,11 @@ import (
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
-	"resk/core/accounts"
+	"github.com/zhangxinling2/account/core/accounts"
+	acservices "github.com/zhangxinling2/account/services"
 	"github.com/zhangxinling2/infra/algo"
 	"github.com/zhangxinling2/infra/base"
-	services "resk/services"
+	services "github.com/zhangxinling2/resk/services"
 )
 
 var mul = decimal.NewFromFloat(100.0)
@@ -46,7 +47,7 @@ func (d *goodsDomain) Receive(ctx context.Context, dto services.RedEnvelopeRecei
 			return err
 		}
 		status, err := d.transfer(ctx, dto)
-		if status == services.TransferSuccess {
+		if status == acservices.TransferSuccess {
 			return nil
 		} else {
 			return err
@@ -83,41 +84,41 @@ func (d *goodsDomain) nextAmount(goods *RedEnvelopeGoods) (amount decimal.Decima
 	}
 	return amount, nil
 }
-func (d *goodsDomain) transfer(ctx context.Context, dto services.RedEnvelopeReceiveDTO) (status services.TransferStatus, err error) {
+func (d *goodsDomain) transfer(ctx context.Context, dto services.RedEnvelopeReceiveDTO) (status acservices.TransferStatus, err error) {
 	sa := base.GetSystemAccount()
-	body := services.TradeParticipator{
+	body := acservices.TradeParticipator{
 		AccountNo: sa.AccountNo,
 		UserId:    sa.UserId,
 		UserName:  sa.UserName,
 	}
-	target := services.TradeParticipator{
+	target := acservices.TradeParticipator{
 		AccountNo: dto.AccountNo,
 		UserId:    dto.RecvUserId,
 		UserName:  dto.RecvUsername,
 	}
-	transfer := services.AccountTransferDTO{
+	transfer := acservices.AccountTransferDTO{
 		TradeNo:     dto.EnvelopeNo,
 		TradeBody:   body,
 		TradeTarget: target,
 		AmountStr:   "",
 		Amount:      d.item.Amount,
-		ChangeType:  services.EnvelopeOutgoing,
-		ChangeFlag:  services.FlagTransferOut,
+		ChangeType:  acservices.EnvelopeOutgoing,
+		ChangeFlag:  acservices.FlagTransferOut,
 		Decs:        "红包扣减" + dto.EnvelopeNo,
 	}
 	domain := accounts.NewAccountDomain()
 	status, err = domain.TransferWithContextTx(ctx, transfer)
-	if err != nil || status != services.TransferSuccess {
+	if err != nil || status != acservices.TransferSuccess {
 		return status, err
 	}
-	transfer = services.AccountTransferDTO{
+	transfer = acservices.AccountTransferDTO{
 		TradeNo:     dto.EnvelopeNo,
 		TradeBody:   target,
 		TradeTarget: body,
 		AmountStr:   "",
 		Amount:      d.item.Amount,
-		ChangeType:  services.EnvelopeIncoming,
-		ChangeFlag:  services.FlagTransferIn,
+		ChangeType:  acservices.EnvelopeIncoming,
+		ChangeFlag:  acservices.FlagTransferIn,
 		Decs:        "收红包" + dto.EnvelopeNo,
 	}
 	return domain.TransferWithContextTx(ctx, transfer)

@@ -22,6 +22,12 @@ type RedEnvelopeService interface {
 	Refund(envelopeNo string) (order *RedEnvelopeGoodsDTO)
 	//查询红包订单
 	Get(envelopeNo string) (order *RedEnvelopeGoodsDTO)
+	//查询用户已经发送的红包列表
+	ListSent(userId string, page, size int) (orders []*RedEnvelopeGoodsDTO)
+	ListReceived(userId string, page, size int) (items []*RedEnvelopeItemDTO)
+	//查询用户已经抢到的红包列表
+	ListReceivable(page, size int) (orders []*RedEnvelopeGoodsDTO)
+	ListItems(envelopeNo string) (items []*RedEnvelopeItemDTO)
 }
 
 type RedEnvelopeSendingDTO struct {

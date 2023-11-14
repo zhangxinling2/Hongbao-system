@@ -9,7 +9,7 @@ type RedEnvelopeItemDao struct {
 	runner *dbx.TxRunner
 }
 
-//查询 GetOne
+// 查询 GetOne
 func (dao *RedEnvelopeItemDao) GetOne(itemNo string) *RedEnvelopeItem {
 	form := &RedEnvelopeItem{ItemNo: itemNo}
 	ok, err := dao.runner.GetOne(form)
@@ -22,7 +22,7 @@ func (dao *RedEnvelopeItemDao) GetOne(itemNo string) *RedEnvelopeItem {
 	return form
 }
 
-//红包订单详情数据的写入 Insert
+// 红包订单详情数据的写入 Insert
 func (dao *RedEnvelopeItemDao) Insert(form *RedEnvelopeItem) (int64, error) {
 	rs, err := dao.runner.Insert(form)
 	if err != nil {
@@ -38,6 +38,30 @@ func (dao *RedEnvelopeItemDao) FindItems(envelopeNo string) []*RedEnvelopeItem {
 	if err != nil {
 		log.Error(err)
 		return nil
+	}
+	return items
+}
+func (dao *RedEnvelopeItemDao) GetByUser(envelopeNo, userId string) *RedEnvelopeItem {
+	item := RedEnvelopeItem{}
+	sql := "select * from red_envelope_item where envelope_no=? and recv_user_id=?"
+	ok, err := dao.runner.Get(&item, sql, envelopeNo, userId)
+	if !ok {
+		return nil
+	}
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
+	return &item
+}
+
+func (dao *RedEnvelopeItemDao) ListReceivedItems(userId string, page, size int) []*RedEnvelopeItem {
+	items := make([]*RedEnvelopeItem, 0)
+	sql := "select * from red_envelope_item where recv_user_id=? order by created_at desc limit ?,?"
+	err := dao.runner.Find(&items, sql, userId, page, size)
+	if err != nil {
+		log.Error(err)
+		return items
 	}
 	return items
 }

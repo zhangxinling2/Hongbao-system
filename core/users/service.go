@@ -1,10 +1,10 @@
 package users
 
 import (
-	acservices "git.imooc.com/wendell1000/account/services"
-	"git.imooc.com/wendell1000/infra/base"
 	log "github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
+	acservices "github.com/zhangxinling2/account/services"
+	"github.com/zhangxinling2/infra/base"
 	"strconv"
 )
 
@@ -54,12 +54,12 @@ func (u *UserService) Login(mobile, username string) (user *User) {
 	a := as.GetEnvelopeAccountByUserId(user.UserId)
 	if a == nil {
 		dto := acservices.AccountCreatedDTO{
-			UserId:       user.UserId,
-			Username:     user.Username,
-			AccountName:  user.Username,
-			AccountType:  int(acservices.EnvelopeAccountType),
-			CurrencyCode: acservices.DefaultCurrencyCode,
-			Amount:       "1000",
+			UserId:      user.UserId,
+			UserName:    user.Username,
+			AccountName: user.Username,
+			AccountType: int(acservices.EnvelopeAccountType),
+			CurrentCode: "CNY",
+			Amount:      "1000",
 		}
 		_, err := as.CreateAccount(dto)
 		if err != nil {

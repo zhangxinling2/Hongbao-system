@@ -4,22 +4,23 @@ import (
 	"github.com/segmentio/ksuid"
 	"github.com/shopspring/decimal"
 	. "github.com/smartystreets/goconvey/convey"
-	service "resk/services"
-	_ "resk/testx"
+	acservice "github.com/zhangxinling2/account/services"
+	service "github.com/zhangxinling2/resk/services"
+	_ "github.com/zhangxinling2/resk/testx"
 	"testing"
 )
 
 func TestRedEnvelopeService_SendOut(t *testing.T) {
 	re := service.GetRedEnvelopeService()
-	account := service.AccountCreatedDTO{
+	account := acservice.AccountCreatedDTO{
 		UserId:      ksuid.New().Next().String(),
 		UserName:    "测试账户",
 		AccountName: "测试账户",
-		AccountType: int(service.EnvelopeAccountType),
+		AccountType: int(acservice.EnvelopeAccountType),
 		CurrentCode: "CNY",
 		Amount:      "1000",
 	}
-	ac := service.GetAccountService()
+	ac := acservice.GetAccountService()
 	Convey("创建账户", t, func() {
 		acDTO, err := ac.CreateAccount(account)
 		So(err, ShouldBeNil)
@@ -70,15 +71,15 @@ func TestRedEnvelopeService_SendOut(t *testing.T) {
 }
 func TestRedEnvelopeService_SendOut_Failure(t *testing.T) {
 	re := service.GetRedEnvelopeService()
-	account := service.AccountCreatedDTO{
+	account := acservice.AccountCreatedDTO{
 		UserId:      ksuid.New().Next().String(),
 		UserName:    "测试账户F",
 		AccountName: "测试账户F",
-		AccountType: int(service.EnvelopeAccountType),
+		AccountType: int(acservice.EnvelopeAccountType),
 		CurrentCode: "CNY",
 		Amount:      "30",
 	}
-	ac := service.GetAccountService()
+	ac := acservice.GetAccountService()
 	Convey("创建账户", t, func() {
 		acDTO, err := ac.CreateAccount(account)
 		So(err, ShouldBeNil)

@@ -5,7 +5,7 @@ import (
 	"github.com/segmentio/ksuid"
 	"github.com/tietang/dbx"
 	"github.com/zhangxinling2/infra/base"
-	services "resk/services"
+	services "github.com/zhangxinling2/resk/services"
 )
 
 type itemDomain struct {

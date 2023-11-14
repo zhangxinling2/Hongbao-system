@@ -3,10 +3,11 @@ package envelopes
 import (
 	"context"
 	"github.com/tietang/dbx"
-	"path"
-	"resk/core/accounts"
+	"github.com/zhangxinling2/account/core/accounts"
+	acservices "github.com/zhangxinling2/account/services"
 	"github.com/zhangxinling2/infra/base"
-	services "resk/services"
+	services "github.com/zhangxinling2/resk/services"
+	"path"
 )
 
 func (g *goodsDomain) SendOut(goods services.RedEnvelopeGoodsDTO) (activity *services.RedEnvelopeActivity, err error) {
@@ -22,43 +23,43 @@ func (g *goodsDomain) SendOut(goods services.RedEnvelopeGoodsDTO) (activity *ser
 		if id <= 0 || err != nil {
 			return err
 		}
-		body := services.TradeParticipator{
+		body := acservices.TradeParticipator{
 			AccountNo: goods.AccountNo,
 			UserId:    goods.UserId,
 			UserName:  goods.UserName,
 		}
 		systemAccount := base.GetSystemAccount()
-		target := services.TradeParticipator{
+		target := acservices.TradeParticipator{
 			AccountNo: systemAccount.AccountNo,
 			UserId:    systemAccount.UserId,
 			UserName:  systemAccount.UserName,
 		}
-		transfer := services.AccountTransferDTO{
+		transfer := acservices.AccountTransferDTO{
 			TradeNo:     g.EnvelopeNo,
 			TradeBody:   body,
 			TradeTarget: target,
 			AmountStr:   g.Amount.String(),
 			Amount:      g.Amount,
-			ChangeType:  services.EnvelopeOutgoing,
-			ChangeFlag:  services.FlagTransferOut,
+			ChangeType:  acservices.EnvelopeOutgoing,
+			ChangeFlag:  acservices.FlagTransferOut,
 			Decs:        "红包金额支付",
 		}
 		status, err := accountDomain.TransferWithContextTx(ctx, transfer)
-		if status != services.TransferSuccess {
+		if status != acservices.TransferSuccess {
 			return err
 		}
-		transfer = services.AccountTransferDTO{
+		transfer = acservices.AccountTransferDTO{
 			TradeNo:     g.EnvelopeNo,
 			TradeBody:   target,
 			TradeTarget: body,
 			AmountStr:   g.Amount.String(),
 			Amount:      g.Amount,
-			ChangeType:  services.EnvelopeIncoming,
-			ChangeFlag:  services.FlagTransferIn,
+			ChangeType:  acservices.EnvelopeIncoming,
+			ChangeFlag:  acservices.FlagTransferIn,
 			Decs:        "红包金额转入",
 		}
 		status, err = accountDomain.TransferWithContextTx(ctx, transfer)
-		if status != services.TransferSuccess {
+		if status != acservices.TransferSuccess {
 			return err
 		}
 		return nil

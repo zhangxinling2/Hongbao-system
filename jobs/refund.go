@@ -8,8 +8,8 @@ import (
 	"github.com/tietang/go-utils"
 	"github.com/zhangxinling2/infra"
 	"github.com/zhangxinling2/infra/base"
-	"resk/core/envelopes"
-	services "resk/services"
+	"github.com/zhangxinling2/resk/core/envelopes"
+	services "github.com/zhangxinling2/resk/services"
 	"time"
 )
 

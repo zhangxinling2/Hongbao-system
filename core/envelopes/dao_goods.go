@@ -4,7 +4,7 @@ import (
 	"github.com/shopspring/decimal"
 	log "github.com/sirupsen/logrus"
 	"github.com/tietang/dbx"
-	services "resk/services"
+	services "github.com/zhangxinling2/resk/services"
 	"time"
 )
 
@@ -39,12 +39,12 @@ func (dao *EnvelopeDao) FindExpired(offset, size int) []RedEnvelopeGoods {
 	return goods
 }
 
-//更新红包余额和数量
-//不再使用事务行锁来更新红包余额和数量
-//使用乐观锁来保证更新红包余额和数量的安全，避免负库存问题
-//通过在where子句中判断红包剩余金额和数量来解决2个问题：
-//1. 负库存问题，避免红包剩余金额和数量不够时进行扣减更新
-//2. 减少实际的数据更新，也就是过滤掉部分无效的更新，提高总体性能
+// 更新红包余额和数量
+// 不再使用事务行锁来更新红包余额和数量
+// 使用乐观锁来保证更新红包余额和数量的安全，避免负库存问题
+// 通过在where子句中判断红包剩余金额和数量来解决2个问题：
+// 1. 负库存问题，避免红包剩余金额和数量不够时进行扣减更新
+// 2. 减少实际的数据更新，也就是过滤掉部分无效的更新，提高总体性能
 func (dao *EnvelopeDao) UpdateBalance(envelopeNo string, amount decimal.Decimal) (int64, error) {
 	sql := "update red_envelope_goods set remain_amount = remain_amount-CAST(? AS DECIMAL(30,6)),remain_quantity=remain_quantity-1 where envelope_no=?" +
 		" and remain_amount >=CAST(? AS DECIMAL(30,6)) and remain_quantity > 0"
@@ -63,4 +63,37 @@ func (dao *EnvelopeDao) UpdateOrderStatus(envelopeNo string, status services.Ord
 		return 0, err
 	}
 	return rs.RowsAffected()
+}
+
+func (dao *EnvelopeDao) Find(po *RedEnvelopeGoods, offset, limit int) []RedEnvelopeGoods {
+	var redEnvelopeGoodss []RedEnvelopeGoods
+	err := dao.runner.FindExample(po, &redEnvelopeGoodss)
+	if err != nil {
+		log.Error(err)
+	}
+	return redEnvelopeGoodss
+}
+
+func (dao *EnvelopeDao) FindByUser(userId string, offset, limit int) []RedEnvelopeGoods {
+	var goods []RedEnvelopeGoods
+
+	sql := " select * from red_envelope_goods " +
+		" where  user_id=?  order by created_at desc limit ?,?"
+	err := dao.runner.Find(&goods, sql, userId, offset, limit)
+	if err != nil {
+		log.Error(err)
+	}
+	return goods
+}
+
+func (dao *EnvelopeDao) ListReceivable(offset, size int) []RedEnvelopeGoods {
+	var goods []RedEnvelopeGoods
+	now := time.Now()
+	sql := " select * from red_envelope_goods " +
+		" where  remain_quantity>0  and expired_at>? order by created_at desc limit ?,?"
+	err := dao.runner.Find(&goods, sql, now, offset, size)
+	if err != nil {
+		log.Error(err)
+	}
+	return goods
 }

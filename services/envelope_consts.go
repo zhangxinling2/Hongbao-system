@@ -1,7 +1,8 @@
 package service
 
 const (
-	DefaultBlessing string = "恭喜发财"
+	DefaultBlessing   string = "恭喜发财"
+	DefaultTimeFormat        = "2006-01-02.15:04:05"
 )
 
 // 订单类型
